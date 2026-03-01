@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamza Amin ERP | Ultra Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- PDF Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        onyx: '#0f1115',
+                        card: '#1a1d23',
+                        gold: '#d4af37',
+                        'gold-dark': '#aa771c',
+                        border: 'rgba(255, 255, 255, 0.08)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f1115;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .gold-text {
+            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border {
+            border: 1px solid #d4af37;
+        }
+
+        .glass-card {
+            background: #1a1d23;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1rem;
+            transition: all 0.2s;
+        }
+
+        .nav-item {
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: #f1c40f;
+            border-left-color: #f1c40f;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+            color: #000;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-gold:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+        }
+
+        input, select {
+            background: #242830 !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            outline: none;
+        }
+        
+        input:focus, select:focus {
+            border-color: #d4af37 !important;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f1115; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+
+        /* Print Specifics */
+        .printable-area {
+            display: none;
+            color: black;
+            background: white;
+            font-family: 'Times New Roman', serif;
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex text-sm">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-black/40 border-r border-white/5 flex flex-col hidden md:flex">
+        <div class="p-6 border-b border-white/5">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 bg-gradient-to-br from-yellow-500 to-amber-700 rounded-lg flex items-center justify-center text-black shadow-lg shadow-yellow-900/20">
+                    <i class="fa-solid fa-graduation-cap text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black gold-text font-serif">HAMZA AMIN</h1>
+                    <p class="text-[9px] uppercase tracking-widest text-zinc-500">Institute ERP</p>
+                </div>
+            </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto py-4 space-y-1 px-3">
+            <button onclick="app.nav('dashboard')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-r-lg text-zinc-400 active" id="nav-dashboard">
+                <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
+            </button>
+            <button onclick="app.nav('students')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-r-lg text-zinc-400" id="nav-students">
+                <i class="fa-solid fa-users w-5"></i> Students
+            </button>
+            <button onclick="app.nav('attendance')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-r-lg text-zinc-400" id="nav-attendance">
+                <i class="fa-solid fa-calendar-check w-5"></i> Attendance
+            </button>
+            <button onclick="app.nav('finance')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-r-lg text-zinc-400" id="nav-finance">
+                <i class="fa-solid fa-file-invoice-dollar w-5"></i> Fee & Finance
+            </button>
+            <button onclick="app.nav('exams')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-r-lg text-zinc-400" id="nav-exams">
+                <i class="fa-solid fa-file-signature w-5"></i> Examination
+            </button>
+            <button onclick="app.nav('scholarship')" class="nav-item w-full flex items-center gap-3 px-4 py-3 rounded-r-lg text-zinc-400" id="nav-scholarship">
+                <i class="fa-solid fa-certificate w-5"></i> Scholarships
+            </button>
+        </nav>
+
+        <div class="p-4 text-center border-t border-white/5">
+            <p id="clock" class="text-xs font-mono text-zinc-500"></p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+        <!-- Mobile Header -->
+        <header class="h-16 border-b border-white/5 flex items-center justify-between px-6 bg-onyx/90 backdrop-blur z-20">
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-zinc-400"><i class="fa-solid fa-bars"></i></button>
+                <h2 id="page-title" class="text-xl font-bold text-white">Dashboard</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <button onclick="app.resetData()" class="text-xs text-red-500 hover:text-red-400 underline">Reset Data</button>
+                <div class="h-8 w-8 rounded-full bg-zinc-800 border border-white/10 flex items-center justify-center">
+                    <i class="fa-solid fa-user text-xs text-zinc-400"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Views Container -->
+        <div id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8 relative">
+            
+            <!-- DASHBOARD -->
+            <div id="view-dashboard" class="space-y-6 animate-fade-in">
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="glass-card p-6 border-l-4 border-blue-500">
+                        <div class="text-zinc-400 text-xs uppercase font-bold tracking-wider mb-2">Total Enrollment</div>
+                        <div class="text-3xl font-black text-white" id="dash-total-students">0</div>
+                    </div>
+                    <div class="glass-card p-6 border-l-4 border-green-500">
+                        <div class="text-zinc-400 text-xs uppercase font-bold tracking-wider mb-2">Revenue Collected</div>
+                        <div class="text-3xl font-black text-green-400">Rs <span id="dash-revenue">0</span></div>
+                    </div>
+                    <div class="glass-card p-6 border-l-4 border-yellow-500">
+                        <div class="text-zinc-400 text-xs uppercase font-bold tracking-wider mb-2">Avg. Attendance</div>
+                        <div class="text-3xl font-black text-yellow-400"><span id="dash-attendance">0</span>%</div>
+                    </div>
+                    <div class="glass-card p-6 border-l-4 border-purple-500">
+                        <div class="text-zinc-400 text-xs uppercase font-bold tracking-wider mb-2">Top Scorer</div>
+                        <div class="text-xl font-bold text-purple-400 truncate" id="dash-topper">--</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Recent Admissions -->
+                    <div class="glass-card p-6 lg:col-span-2">
+                        <h3 class="font-bold text-lg mb-4">Recent Admissions</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead class="text-xs text-zinc-500 uppercase bg-white/5">
+                                    <tr>
+                                        <th class="p-3">ID</th>
+                                        <th class="p-3">Name</th>
+                                        <th class="p-3">Field</th>
+                                        <th class="p-3">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dash-recent-table" class="text-zinc-300 text-sm"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Quick Actions -->
+                    <div class="glass-card p-6">
+                        <h3 class="font-bold text-lg mb-4">Quick Enrollment</h3>
+                        <button onclick="app.nav('students', true)" class="w-full btn-gold py-3 rounded-lg flex items-center justify-center gap-2 mb-3">
+                            <i class="fa-solid fa-plus"></i> New Student Admission
+                        </button>
+                        <div class="p-4 bg-white/5 rounded-lg text-center">
+                            <p class="text-xs text-zinc-400 mb-1">Scholarship Holders</p>
+                            <p class="text-2xl font-bold gold-text" id="dash-scholar-count">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STUDENTS -->
+            <div id="view-students" class="hidden space-y-6">
+                <!-- Controls -->
+                <div class="flex flex-col md:flex-row gap-4 justify-between items-center bg-card p-4 rounded-xl border border-white/5">
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <button onclick="app.modals.admission.show()" class="btn-gold px-6 py-2 rounded-lg text-xs uppercase font-bold whitespace-nowrap">
+                            <i class="fa-solid fa-plus mr-2"></i> Add New
+                        </button>
+                    </div>
+                    <div class="flex gap-2 w-full md:w-auto">
+                        <input type="text" id="stud-search" placeholder="Search by name or ID..." class="px-4 py-2 rounded-lg bg-black w-full md:w-64 text-xs" onkeyup="app.modules.students.render()">
+                        <select id="stud-filter-field" class="px-4 py-2 rounded-lg bg-black text-xs" onchange="app.modules.students.render()">
+                            <option value="all">All Fields</option>
+                            <option value="ICS">ICS</option>
+                            <option value="Pre-Medical">Pre-Medical</option>
+                            <option value="Pre-Engineering">Pre-Engineering</option>
+                            <option value="Arts">Arts</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="glass-card overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-black/40 text-xs uppercase text-zinc-500 font-bold border-b border-white/5">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Name / Father</th>
+                                <th class="p-4">Field</th>
+                                <th class="p-4">Scholarship</th>
+                                <th class="p-4">Status</th>
+                                <th class="p-4 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="students-table-body" class="divide-y divide-white/5 text-zinc-300"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ATTENDANCE -->
+            <div id="view-attendance" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Daily Controls -->
+                    <div class="glass-card p-6 lg:col-span-1 h-fit">
+                        <h3 class="font-bold text-lg mb-4">Mark Attendance</h3>
+                        <div class="mb-4">
+                            <label class="text-xs text-zinc-500 uppercase block mb-1">Select Date</label>
+                            <input type="date" id="att-date" class="w-full p-2 rounded bg-black border border-zinc-700" onchange="app.modules.attendance.loadDaily()">
+                        </div>
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="text-center">
+                                <span class="block text-xl font-bold text-green-400" id="att-present-count">0</span>
+                                <span class="text-[10px] uppercase text-zinc-500">Present</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="block text-xl font-bold text-red-400" id="att-absent-count">0</span>
+                                <span class="text-[10px] uppercase text-zinc-500">Absent</span>
+                            </div>
+                        </div>
+                        <button onclick="app.modules.attendance.saveDay()" class="w-full btn-gold py-2 rounded mb-2">Save Today's Log</button>
+                    </div>
+
+                    <!-- Reports -->
+                    <div class="glass-card p-6 lg:col-span-2">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-bold text-lg">Attendance Reports</h3>
+                            <div class="flex gap-2">
+                                <select id="att-report-type" class="p-2 rounded text-xs">
+                                    <option value="monthly">Monthly Report</option>
+                                    <option value="yearly">Yearly Analytics</option>
+                                </select>
+                                <button onclick="app.modules.attendance.printReport()" class="bg-white/10 hover:bg-white/20 p-2 rounded text-white">
+                                    <i class="fa-solid fa-print"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="att-report-display" class="bg-black/30 rounded p-4 h-96 overflow-y-auto border border-white/5">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINANCE -->
+            <div id="view-finance" class="hidden space-y-6">
+                 <!-- Config Bar -->
+                 <div class="glass-card p-4 flex flex-wrap gap-4 items-center justify-between">
+                    <h3 class="font-bold">Fee Management</h3>
+                    <div class="flex gap-2">
+                        <button onclick="app.modals.feeConfig.show()" class="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded text-xs border border-white/10">Manage Fee Structure</button>
+                        <button onclick="app.modals.collectFee.show()" class="btn-gold px-4 py-2 rounded text-xs font-bold">Collect Fee</button>
+                    </div>
+                 </div>
+
+                 <!-- Main Finance Grid -->
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Ledger -->
+                    <div class="glass-card p-6">
+                        <h4 class="font-bold mb-4 text-zinc-400 uppercase text-xs">Recent Transactions</h4>
+                        <div class="overflow-y-auto h-96">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-white/5 text-zinc-500 sticky top-0">
+                                    <tr>
+                                        <th class="p-2">Receipt ID</th>
+                                        <th class="p-2">Student</th>
+                                        <th class="p-2">Date</th>
+                                        <th class="p-2 text-right">Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="finance-ledger-body" class="divide-y divide-white/5"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Defaulters / Balances -->
+                    <div class="glass-card p-6">
+                        <h4 class="font-bold mb-4 text-zinc-400 uppercase text-xs">Student Balances</h4>
+                        <div class="overflow-y-auto h-96">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-white/5 text-zinc-500 sticky top-0">
+                                    <tr>
+                                        <th class="p-2">Name</th>
+                                        <th class="p-2 text-right">Total Due</th>
+                                        <th class="p-2 text-right">Paid</th>
+                                        <th class="p-2 text-right">Remaining</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="finance-balance-body" class="divide-y divide-white/5"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- EXAMS -->
+            <div id="view-exams" class="hidden space-y-6">
+                <div class="flex justify-between items-center glass-card p-4">
+                    <h3 class="font-bold">Examination Control</h3>
+                    <div class="flex gap-2">
+                        <button onclick="app.modals.result.show()" class="btn-gold px-4 py-2 rounded text-xs font-bold">
+                            <i class="fa-solid fa-pen-nib mr-2"></i> Enter Result
+                        </button>
+                        <button onclick="app.modules.exams.downloadSummary()" class="bg-zinc-800 px-4 py-2 rounded text-xs border border-white/10">
+                            <i class="fa-solid fa-download mr-2"></i> Export Summary
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-black/40 text-xs uppercase text-zinc-500 font-bold border-b border-white/5">
+                            <tr>
+                                <th class="p-4">Rank</th>
+                                <th class="p-4">Student</th>
+                                <th class="p-4">Field</th>
+                                <th class="p-4 text-center">Marks Obtained</th>
+                                <th class="p-4 text-center">Percentage</th>
+                                <th class="p-4 text-center">Grade</th>
+                                <th class="p-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="exam-results-body" class="divide-y divide-white/5 text-zinc-300"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SCHOLARSHIPS -->
+            <div id="view-scholarship" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card p-6 md:col-span-1">
+                        <div class="text-center py-8">
+                            <div class="h-20 w-20 bg-blue-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/30">
+                                <i class="fa-solid fa-graduation-cap text-3xl text-blue-400"></i>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white mb-1" id="schol-total-holders">0</h3>
+                            <p class="text-zinc-500 text-xs uppercase tracking-widest">Active Scholarships</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 md:col-span-2 overflow-hidden">
+                        <h4 class="font-bold mb-4">Scholarship Holders Directory</h4>
+                        <div class="overflow-y-auto h-64">
+                            <table class="w-full text-sm">
+                                <thead class="bg-white/5 text-zinc-500 text-xs uppercase">
+                                    <tr>
+                                        <th class="p-3 text-left">Student</th>
+                                        <th class="p-3 text-center">Grant %</th>
+                                        <th class="p-3 text-right">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scholarship-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODALS -->
+
+    <!-- Admission Modal -->
+    <div id="modal-admission" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 animate-fade-in relative">
+            <button onclick="app.modals.admission.hide()" class="absolute top-4 right-4 text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-xl font-bold mb-6 text-white">New Admission</h3>
+            <form onsubmit="app.modules.students.add(event)" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-500 block mb-1">Full Name</label>
+                        <input type="text" name="name" required class="w-full p-3 rounded bg-zinc-900 border border-zinc-700">
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-500 block mb-1">Father/Guardian</label>
+                        <input type="text" name="father" required class="w-full p-3 rounded bg-zinc-900 border border-zinc-700">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-zinc-500 block mb-1">Field</label>
+                        <select name="field" required class="w-full p-3 rounded bg-zinc-900 border border-zinc-700">
+                            <option value="ICS">ICS</option>
+                            <option value="Pre-Medical">Pre-Medical</option>
+                            <option value="Pre-Engineering">Pre-Engineering</option>
+                            <option value="Arts">Arts</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-zinc-500 block mb-1">Scholarship %</label>
+                        <input type="number" name="scholarship" min="0" max="100" value="0" class="w-full p-3 rounded bg-zinc-900 border border-zinc-700">
+                    </div>
+                </div>
+                <button type="submit" class="w-full btn-gold py-3 rounded font-bold mt-4">Confirm Enrollment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Fee Config Modal -->
+    <div id="modal-fee-config" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md p-8 relative">
+            <button onclick="app.modals.feeConfig.hide()" class="absolute top-4 right-4 text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold mb-4">Fee Structure Configuration</h3>
+            <div id="fee-config-list" class="space-y-3 mb-6 max-h-60 overflow-y-auto"></div>
+            <div class="border-t border-white/10 pt-4">
+                <h4 class="text-xs uppercase font-bold text-zinc-500 mb-2">Add New Charge</h4>
+                <div class="flex gap-2">
+                    <input type="text" id="new-fee-name" placeholder="Title" class="w-2/3 p-2 rounded text-xs bg-black">
+                    <input type="number" id="new-fee-amount" placeholder="Price" class="w-1/3 p-2 rounded text-xs bg-black">
+                </div>
+                <button onclick="app.modules.finance.addFeeType()" class="w-full mt-2 bg-zinc-700 hover:bg-zinc-600 py-2 rounded text-xs">Add Component</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collect Fee Modal -->
+    <div id="modal-collect-fee" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm p-8 relative">
+            <button onclick="app.modals.collectFee.hide()" class="absolute top-4 right-4 text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold mb-6">Collect Payment</h3>
+            <form onsubmit="app.modules.finance.pay(event)" class="space-y-4">
+                <select id="pay-student-id" required class="w-full p-3 rounded bg-zinc-900 border border-zinc-700 text-xs" onchange="app.modules.finance.updateDueHint()">
+                    <option value="">Select Student</option>
+                </select>
+                <p id="pay-due-hint" class="text-xs text-right text-red-400 font-mono"></p>
+                <input type="number" id="pay-amount" placeholder="Amount (PKR)" required class="w-full p-3 rounded bg-zinc-900 border border-zinc-700">
+                <button type="submit" class="w-full btn-gold py-3 rounded font-bold">Process & Print Receipt</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Result Entry Modal -->
+    <div id="modal-result" class="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-8 relative">
+            <button onclick="app.modals.result.hide()" class="absolute top-4 right-4 text-zinc-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            <h3 class="text-lg font-bold mb-4">Academic Result Entry</h3>
+            <select id="res-student-id" class="w-full p-3 rounded bg-zinc-900 border border-zinc-700 mb-4" onchange="app.modules.exams.loadSubjects()">
+                <option value="">Select Student</option>
+            </select>
+            <form id="res-form" onsubmit="app.modules.exams.save(event)" class="hidden space-y-4">
+                <div id="res-inputs-container" class="grid grid-cols-2 gap-3 max-h-60 overflow-y-auto p-1"></div>
+                <button type="submit" class="w-full btn-gold py-3 rounded font-bold">Save & Generate Transcript</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- PRINT TEMPLATES (Hidden) -->
+    <div id="print-container"></div>
+
+    <script>
+        // --- DATA LAYER ---
+        const DB_KEYS = { STU: 'ha_students', FEE: 'ha_fees', TXN: 'ha_txns', RES: 'ha_results' };
+        
+        const DEFAULT_FEES = [
+            { id: 1, name: 'Tuition Fee', amount: 5000 },
+            { id: 2, name: 'Exam Fund', amount: 1000 },
+            { id: 3, name: 'Lab Charges', amount: 500 }
+        ];
+
+        const SUBJECTS_MAP = {
+            'ICS': ['Computer Science', 'Mathematics', 'Physics', 'English', 'Urdu', 'Islamic Studies'],
+            'Pre-Medical': ['Biology', 'Physics', 'Chemistry', 'English', 'Urdu', 'Islamic Studies'],
+            'Pre-Engineering': ['Mathematics', 'Physics', 'Chemistry', 'English', 'Urdu', 'Islamic Studies'],
+            'Arts': ['Education', 'Civics', 'Islamic Elective', 'English', 'Urdu', 'Islamic Studies']
+        };
+
+        const app = {
+            data: {
+                students: [],
+                fees: [],
+                transactions: [],
+                results: []
+            },
+
+            init: () => {
+                app.loadData();
+                if(app.data.students.length === 0) app.seedData();
+                app.startClock();
+                app.nav('dashboard');
+            },
+
+            loadData: () => {
+                app.data.students = JSON.parse(localStorage.getItem(DB_KEYS.STU)) || [];
+                app.data.fees = JSON.parse(localStorage.getItem(DB_KEYS.FEE)) || DEFAULT_FEES;
+                app.data.transactions = JSON.parse(localStorage.getItem(DB_KEYS.TXN)) || [];
+                app.data.results = JSON.parse(localStorage.getItem(DB_KEYS.RES)) || [];
+            },
+
+            saveData: () => {
+                localStorage.setItem(DB_KEYS.STU, JSON.stringify(app.data.students));
+                localStorage.setItem(DB_KEYS.FEE, JSON.stringify(app.data.fees));
+                localStorage.setItem(DB_KEYS.TXN, JSON.stringify(app.data.transactions));
+                localStorage.setItem(DB_KEYS.RES, JSON.stringify(app.data.results));
+                app.refreshCurrentView();
+            },
+
+            resetData: () => {
+                if(confirm("Factory Reset: This will delete all data and reload default 20 students. Continue?")) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            },
+
+            seedData: () => {
+                const names = ["Ali Khan", "Ahmed Raza", "Sara Bibi", "Fatima Noor", "Usman Ghani", "Hamza Shah", "Zainab Gul", "Bilal Ahmed", "Ayesha Siddiqa", "Umer Farooq", "Hassan Ali", "Hussain Shah", "Khadija Bibi", "Yusuf Khan", "Mariam Nawaz", "Ibrahim Khal", "Sana Mir", "Taha Malik", "Fozia Basir", "Kamran Akmal"];
+                const fields = ["ICS", "Pre-Medical", "Pre-Engineering", "Arts"];
+                
+                // Generate 3 months past dates
+                const dates = [];
+                const today = new Date();
+                for(let i=0; i<90; i++) {
+                    const d = new Date();
+                    d.setDate(today.getDate() - i);
+                    dates.push(d.toISOString().split('T')[0]);
+                }
+
+                app.data.students = names.map((name, i) => {
+                    const field = fields[Math.floor(Math.random() * fields.length)];
+                    const attendance = {};
+                    dates.forEach(d => {
+                        // 80% chance of present
+                        attendance[d] = Math.random() > 0.2 ? 'P' : 'A';
+                    });
+
+                    return {
+                        id: `STU-${1000 + i}`,
+                        name: name,
+                        father: `Father of ${name.split(' ')[0]}`,
+                        field: field,
+                        scholarship: Math.random() > 0.8 ? [10, 20, 50, 100][Math.floor(Math.random()*4)] : 0,
+                        attendance: attendance,
+                        admissionDate: dates[Math.floor(Math.random() * 10)] // recent admissions
+                    };
+                });
+                
+                app.data.fees = DEFAULT_FEES;
+                app.saveData();
+            },
+
+            nav: (viewId, isModal = false) => {
+                if(isModal) {
+                    app.modals.admission.show();
+                    return;
+                }
+                
+                // Active State
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active', 'bg-white/5', 'border-l-4', 'border-gold'));
+                const navBtn = document.getElementById('nav-' + viewId);
+                if(navBtn) navBtn.classList.add('active');
+
+                // View Switching
+                document.querySelectorAll('[id^="view-"]').forEach(el => el.classList.add('hidden'));
+                document.getElementById('view-' + viewId).classList.remove('hidden');
+                
+                // Title
+                const titles = {
+                    'dashboard': 'Dashboard Overview',
+                    'students': 'Student Directory',
+                    'attendance': 'Attendance Management',
+                    'finance': 'Fee & Finance',
+                    'exams': 'Examination Hall',
+                    'scholarship': 'Scholarship Holders'
+                };
+                document.getElementById('page-title').innerText = titles[viewId];
+                
+                app.currentView = viewId;
+                app.refreshCurrentView();
+            },
+
+            refreshCurrentView: () => {
+                if(app.currentView === 'dashboard') app.modules.dashboard.render();
+                if(app.currentView === 'students') app.modules.students.render();
+                if(app.currentView === 'finance') app.modules.finance.render();
+                if(app.currentView === 'scholarship') app.modules.scholarship.render();
+                if(app.currentView === 'exams') app.modules.exams.render();
+            },
+
+            startClock: () => {
+                setInterval(() => {
+                    document.getElementById('clock').innerText = new Date().toLocaleString('en-US', { 
+                        weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' 
+                    });
+                }, 1000);
+            },
+
+            modals: {
+                admission: {
+                    show: () => document.getElementById('modal-admission').classList.remove('hidden'),
+                    hide: () => document.getElementById('modal-admission').classList.add('hidden')
+                },
+                feeConfig: {
+                    show: () => {
+                        app.modules.finance.renderFeeConfig();
+                        document.getElementById('modal-fee-config').classList.remove('hidden');
+                    },
+                    hide: () => document.getElementById('modal-fee-config').classList.add('hidden')
+                },
+                collectFee: {
+                    show: () => {
+                        app.utils.populateStudentDropdown('pay-student-id');
+                        document.getElementById('modal-collect-fee').classList.remove('hidden');
+                    },
+                    hide: () => document.getElementById('modal-collect-fee').classList.add('hidden')
+                },
+                result: {
+                    show: () => {
+                        app.utils.populateStudentDropdown('res-student-id');
+                        document.getElementById('modal-result').classList.remove('hidden');
+                    },
+                    hide: () => document.getElementById('modal-result').classList.add('hidden')
+                }
+            },
+
+            utils: {
+                populateStudentDropdown: (elementId) => {
+                    const sel = document.getElementById(elementId);
+                    sel.innerHTML = '<option value="">Select Student</option>' + 
+                        app.data.students.map(s => `<option value="${s.id}">${s.name} (${s.id})</option>`).join('');
+                },
+                calculateTotalFee: () => app.data.fees.reduce((sum, f) => sum + f.amount, 0),
+                print: (elementId, filename) => {
+                    const el = document.getElementById(elementId);
+                    el.style.display = 'block'; // Make visible for render
+                    const opt = {
+                        margin: 0.5,
+                        filename: filename,
+                        image: { type: 'jpeg', quality: 0.98 },
+                        html2canvas: { scale: 2 },
+                        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                    };
+                    html2pdf().set(opt).from(el).save().then(() => {
+                         el.style.display = 'none'; // Hide again
+                    });
+                }
+            },
+
+            modules: {
+                dashboard: {
+                    render: () => {
+                        const s = app.data.students;
+                        document.getElementById('dash-total-students').innerText = s.length;
+                        
+                        // Revenue
+                        const totalRev = app.data.transactions.reduce((acc, t) => acc + parseInt(t.amount), 0);
+                        document.getElementById('dash-revenue').innerText = totalRev.toLocaleString();
+
+                        // Avg Attendance
+                        let totalP = 0, totalDays = 0;
+                        s.forEach(stu => {
+                            const days = Object.values(stu.attendance);
+                            totalDays += days.length;
+                            totalP += days.filter(d => d === 'P').length;
+                        });
+                        const avgAtt = totalDays ? ((totalP/totalDays)*100).toFixed(1) : 0;
+                        document.getElementById('dash-attendance').innerText = avgAtt;
+
+                        // Top Scorer
+                        const sortedResults = [...app.data.results].sort((a, b) => b.perc - a.perc);
+                        if(sortedResults.length > 0) {
+                            document.getElementById('dash-topper').innerText = `${sortedResults[0].name} (${sortedResults[0].perc}%)`;
+                        }
+
+                        // Recent Admissions
+                        const recents = [...s].sort((a,b) => new Date(b.admissionDate || 0) - new Date(a.admissionDate || 0)).slice(0, 5);
+                        document.getElementById('dash-recent-table').innerHTML = recents.map(stu => `
+                            <tr class="border-b border-white/5">
+                                <td class="p-3 text-zinc-500 font-mono">${stu.id}</td>
+                                <td class="p-3 font-bold">${stu.name}</td>
+                                <td class="p-3 text-xs text-gold">${stu.field}</td>
+                                <td class="p-3 text-xs text-zinc-400">${stu.admissionDate || 'N/A'}</td>
+                            </tr>
+                        `).join('');
+
+                        // Scholarship Count
+                        document.getElementById('dash-scholar-count').innerText = s.filter(x => x.scholarship > 0).length;
+                    }
+                },
+
+                students: {
+                    add: (e) => {
+                        e.preventDefault();
+                        const fd = new FormData(e.target);
+                        const newStu = {
+                            id: `STU-${Math.floor(1000 + Math.random() * 9000)}`,
+                            name: fd.get('name'),
+                            father: fd.get('father'),
+                            field: fd.get('field'),
+                            scholarship: parseInt(fd.get('scholarship')) || 0,
+                            attendance: {},
+                            admissionDate: new Date().toISOString().split('T')[0]
+                        };
+                        app.data.students.push(newStu);
+                        app.saveData();
+                        e.target.reset();
+                        app.modals.admission.hide();
+                        alert('Student Enrolled Successfully');
+                    },
+                    delete: (id) => {
+                        if(confirm('Delete this student permanently?')) {
+                            app.data.students = app.data.students.filter(s => s.id !== id);
+                            app.data.results = app.data.results.filter(r => r.sid !== id);
+                            app.data.transactions = app.data.transactions.filter(t => t.sid !== id);
+                            app.saveData();
+                        }
+                    },
+                    render: () => {
+                        const search = document.getElementById('stud-search').value.toLowerCase();
+                        const filter = document.getElementById('stud-filter-field').value;
+                        
+                        let list = app.data.students.filter(s => 
+                            (s.name.toLowerCase().includes(search) || s.id.toLowerCase().includes(search)) &&
+                            (filter === 'all' || s.field === filter)
+                        );
+
+                        document.getElementById('students-table-body').innerHTML = list.map(s => `
+                            <tr class="hover:bg-white/5 transition">
+                                <td class="p-4 font-mono text-xs text-zinc-500">${s.id}</td>
+                                <td class="p-4">
+                                    <div class="font-bold text-white">${s.name}</div>
+                                    <div class="text-xs text-zinc-500">${s.father}</div>
+                                </td>
+                                <td class="p-4"><span class="bg-zinc-800 px-2 py-1 rounded text-xs border border-white/10">${s.field}</span></td>
+                                <td class="p-4">${s.scholarship > 0 ? `<span class="text-green-400 font-bold text-xs"><i class="fa-solid fa-check mr-1"></i>${s.scholarship}%</span>` : '<span class="text-zinc-600 text-xs">-</span>'}</td>
+                                <td class="p-4"><span class="text-xs text-blue-400">Active</span></td>
+                                <td class="p-4 text-right">
+                                    <button onclick="app.modules.attendance.printSingleReport('${s.id}')" class="text-zinc-400 hover:text-white mr-2" title="Print Attendance"><i class="fa-solid fa-print"></i></button>
+                                    <button onclick="app.modules.students.delete('${s.id}')" class="text-red-500/50 hover:text-red-500" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        `).join('');
+                    }
+                },
+
+                attendance: {
+                    loadDaily: () => {
+                        const date = document.getElementById('att-date').value;
+                        if(!date) return;
+                        
+                        let p = 0, a = 0;
+                        app.data.students.forEach(s => {
+                            if(s.attendance[date] === 'P') p++;
+                            else if(s.attendance[date] === 'A') a++;
+                        });
+                        document.getElementById('att-present-count').innerText = p;
+                        document.getElementById('att-absent-count').innerText = a;
+                    },
+                    saveDay: () => {
+                        const date = document.getElementById('att-date').value;
+                        if(!date) { alert('Select date first'); return; }
+                        
+                        // Simulate simple marking for everyone for demo - in real app, would list all students with checkboxes
+                        const status = confirm("Mark all active students as PRESENT for " + date + "? (Cancel for random mix)");
+                        app.data.students.forEach(s => {
+                            s.attendance[date] = status ? 'P' : (Math.random() > 0.1 ? 'P' : 'A');
+                        });
+                        app.saveData();
+                        app.modules.attendance.loadDaily();
+                        alert('Attendance Saved');
+                    },
+                    printReport: () => {
+                        const type = document.getElementById('att-report-type').value;
+                        const container = document.getElementById('print-container');
+                        
+                        let html = `
+                            <div id="print-att-report" class="printable-area p-8" style="width: 800px;">
+                                <div class="text-center border-b-2 border-black pb-4 mb-4">
+                                    <h1 class="text-3xl font-bold">HAMZA AMIN INSTITUTE</h1>
+                                    <p class="text-sm tracking-[5px] font-bold uppercase mt-2">Attendance Report - ${type.toUpperCase()}</p>
+                                </div>
+                                <table class="w-full text-sm border-collapse border border-black">
+                                    <thead>
+                                        <tr class="bg-gray-200">
+                                            <th class="border border-black p-2">ID</th>
+                                            <th class="border border-black p-2">Name</th>
+                                            <th class="border border-black p-2">Present</th>
+                                            <th class="border border-black p-2">Absent</th>
+                                            <th class="border border-black p-2">%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                        `;
+
+                        app.data.students.forEach(s => {
+                            // Filter by current month if monthly, else all time
+                            const days = Object.values(s.attendance); // Simplified: Real logic would filter keys by month
+                            const p = days.filter(x => x === 'P').length;
+                            const a = days.filter(x => x === 'A').length;
+                            const total = p + a;
+                            const perc = total ? ((p/total)*100).toFixed(1) : 0;
+                            
+                            html += `
+                                <tr>
+                                    <td class="border border-black p-2">${s.id}</td>
+                                    <td class="border border-black p-2">${s.name}</td>
+                                    <td class="border border-black p-2 text-center">${p}</td>
+                                    <td class="border border-black p-2 text-center">${a}</td>
+                                    <td class="border border-black p-2 text-center font-bold">${perc}%</td>
+                                </tr>
+                            `;
+                        });
+
+                        html += `</tbody></table><div class="mt-4 text-xs text-right">Generated: ${new Date().toLocaleString()}</div></div>`;
+                        
+                        container.innerHTML = html;
+                        app.utils.print('print-att-report', `Attendance_Report_${type}.pdf`);
+                    },
+                    printSingleReport: (sid) => {
+                        const s = app.data.students.find(x => x.id === sid);
+                        const days = Object.entries(s.attendance).sort();
+                        const p = days.filter(x => x[1] === 'P').length;
+                        const a = days.length - p;
+                        
+                        const container = document.getElementById('print-container');
+                        container.innerHTML = `
+                            <div id="print-single-att" class="printable-area p-10" style="width: 700px;">
+                                <div class="text-center border-b-2 border-black pb-4 mb-6">
+                                    <h1 class="text-2xl font-bold">HAMZA AMIN INSTITUTE</h1>
+                                    <p class="uppercase font-bold tracking-widest text-sm">Student Attendance Profile</p>
+                                </div>
+                                <div class="flex justify-between mb-6">
+                                    <div>
+                                        <p><strong>Name:</strong> ${s.name}</p>
+                                        <p><strong>ID:</strong> ${s.id}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p><strong>Total Days:</strong> ${days.length}</p>
+                                        <p><strong>Attendance:</strong> ${days.length ? ((p/days.length)*100).toFixed(1) : 0}%</p>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4 text-center mb-6">
+                                    <div class="border p-4">
+                                        <h3 class="text-2xl font-bold">${p}</h3>
+                                        <span class="text-xs uppercase">Days Present</span>
+                                    </div>
+                                    <div class="border p-4">
+                                        <h3 class="text-2xl font-bold">${a}</h3>
+                                        <span class="text-xs uppercase">Days Absent</span>
+                                    </div>
+                                </div>
+                                <table class="w-full text-xs border border-black">
+                                    <thead><tr class="bg-gray-100"><th class="p-2 border border-black">Date</th><th class="p-2 border border-black">Status</th></tr></thead>
+                                    <tbody>
+                                        ${days.slice(-20).map(d => `<tr><td class="p-2 border border-black text-center">${d[0]}</td><td class="p-2 border border-black text-center font-bold ${d[1]=='A'?'text-red-600':''}">${d[1]=='P'?'PRESENT':'ABSENT'}</td></tr>`).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                        app.utils.print('print-single-att', `${s.name}_Attendance.pdf`);
+                    }
+                },
+
+                finance: {
+                    render: () => {
+                        // Ledger
+                        const ledgerHTML = app.data.transactions.slice().reverse().map(t => {
+                            const s = app.data.students.find(x => x.id === t.sid);
+                            return `
+                                <tr>
+                                    <td class="p-2 font-mono text-gold">${t.id}</td>
+                                    <td class="p-2">${s ? s.name : 'Unknown'}</td>
+                                    <td class="p-2 text-zinc-500">${t.date}</td>
+                                    <td class="p-2 text-right text-green-400">Rs ${t.amount}</td>
+                                </tr>
+                            `;
+                        }).join('');
+                        document.getElementById('finance-ledger-body').innerHTML = ledgerHTML;
+
+                        // Balances
+                        const totalFee = app.utils.calculateTotalFee();
+                        const balancesHTML = app.data.students.map(s => {
+                            const paid = app.data.transactions.filter(t => t.sid === s.id).reduce((a,b) => a + parseInt(b.amount), 0);
+                            const liability = totalFee; // Simplified for demo
+                            const due = liability - paid;
+                            return `
+                                <tr>
+                                    <td class="p-2 font-bold">${s.name}</td>
+                                    <td class="p-2 text-right">Rs ${liability}</td>
+                                    <td class="p-2 text-right text-green-400">Rs ${paid}</td>
+                                    <td class="p-2 text-right font-bold ${due > 0 ? 'text-red-400' : 'text-zinc-500'}">Rs ${due}</td>
+                                </tr>
+                            `;
+                        }).join('');
+                        document.getElementById('finance-balance-body').innerHTML = balancesHTML;
+                    },
+                    renderFeeConfig: () => {
+                        document.getElementById('fee-config-list').innerHTML = app.data.fees.map((f, idx) => `
+                            <div class="flex justify-between items-center bg-zinc-900 p-3 rounded border border-white/5">
+                                <div><span class="font-bold">${f.name}</span> <span class="text-gold text-xs ml-2">Rs ${f.amount}</span></div>
+                                <button onclick="app.modules.finance.deleteFee(${idx})" class="text-red-500 text-xs"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `).join('');
+                    },
+                    addFeeType: () => {
+                        const name = document.getElementById('new-fee-name').value;
+                        const amount = parseInt(document.getElementById('new-fee-amount').value);
+                        if(name && amount) {
+                            app.data.fees.push({ id: Date.now(), name, amount });
+                            app.saveData();
+                            app.modules.finance.renderFeeConfig();
+                            document.getElementById('new-fee-name').value = '';
+                            document.getElementById('new-fee-amount').value = '';
+                        }
+                    },
+                    deleteFee: (idx) => {
+                        if(confirm('Remove this fee?')) {
+                            app.data.fees.splice(idx, 1);
+                            app.saveData();
+                            app.modules.finance.renderFeeConfig();
+                        }
+                    },
+                    updateDueHint: () => {
+                        const sid = document.getElementById('pay-student-id').value;
+                        if(sid) {
+                            const paid = app.data.transactions.filter(t => t.sid === sid).reduce((a,b) => a + parseInt(b.amount), 0);
+                            const total = app.utils.calculateTotalFee();
+                            document.getElementById('pay-due-hint').innerText = `Remaining Due: Rs ${total - paid}`;
+                        }
+                    },
+                    pay: (e) => {
+                        e.preventDefault();
+                        const sid = document.getElementById('pay-student-id').value;
+                        const amt = document.getElementById('pay-amount').value;
+                        const s = app.data.students.find(x => x.id === sid);
+                        
+                        const txn = {
+                            id: 'TRX-' + Date.now().toString().substr(-6),
+                            sid: sid,
+                            amount: amt,
+                            date: new Date().toISOString().split('T')[0]
+                        };
+
+                        app.data.transactions.push(txn);
+                        app.saveData();
+                        app.modals.collectFee.hide();
+                        e.target.reset();
+
+                        // Print Receipt
+                        const container = document.getElementById('print-container');
+                        container.innerHTML = `
+                            <div id="print-receipt-temp" class="printable-area p-8" style="width: 500px; border: 2px dashed #000;">
+                                <div class="text-center mb-6">
+                                    <h2 class="font-bold text-xl">HAMZA AMIN INSTITUTE</h2>
+                                    <p class="text-xs uppercase">Fee Payment Receipt</p>
+                                </div>
+                                <div class="space-y-2 mb-6 text-sm">
+                                    <div class="flex justify-between"><span>Receipt No:</span> <span class="font-mono">${txn.id}</span></div>
+                                    <div class="flex justify-between"><span>Date:</span> <span>${txn.date}</span></div>
+                                    <div class="flex justify-between"><span>Student:</span> <span class="font-bold">${s.name}</span></div>
+                                    <hr class="border-black my-2">
+                                    <div class="flex justify-between text-lg font-bold"><span>Amount Paid:</span> <span>Rs ${txn.amount}</span></div>
+                                </div>
+                                <p class="text-center text-[10px] mt-4">Thank you for your payment.</p>
+                            </div>
+                        `;
+                        app.utils.print('print-receipt-temp', `Receipt_${txn.id}.pdf`);
+                    }
+                },
+
+                exams: {
+                    loadSubjects: () => {
+                        const sid = document.getElementById('res-student-id').value;
+                        const s = app.data.students.find(x => x.id === sid);
+                        const form = document.getElementById('res-form');
+                        const container = document.getElementById('res-inputs-container');
+                        
+                        if(!s) { form.classList.add('hidden'); return; }
+                        
+                        form.classList.remove('hidden');
+                        const subjects = SUBJECTS_MAP[s.field] || SUBJECTS_MAP['Arts']; // Default fallback
+                        
+                        container.innerHTML = subjects.map(sub => `
+                            <div>
+                                <label class="text-[10px] uppercase text-zinc-500 block">${sub}</label>
+                                <input type="number" name="${sub}" max="100" min="0" placeholder="0-100" class="w-full p-2 rounded bg-black border border-zinc-700 text-xs text-center" required>
+                            </div>
+                        `).join('');
+                    },
+                    save: (e) => {
+                        e.preventDefault();
+                        const fd = new FormData(e.target);
+                        const sid = document.getElementById('res-student-id').value;
+                        const s = app.data.students.find(x => x.id === sid);
+                        
+                        const marks = [];
+                        let totalObt = 0;
+                        let maxMarks = 0;
+
+                        for(let [key, val] of fd.entries()) {
+                            const score = parseInt(val);
+                            if(score > 100) { alert('Marks cannot exceed 100 for ' + key); return; }
+                            marks.push({ subject: key, score: score });
+                            totalObt += score;
+                            maxMarks += 100;
+                        }
+
+                        const perc = ((totalObt / maxMarks) * 100).toFixed(2);
+                        let grade = 'F';
+                        if(perc >= 80) grade = 'A+';
+                        else if(perc >= 70) grade = 'A';
+                        else if(perc >= 60) grade = 'B';
+                        else if(perc >= 50) grade = 'C';
+
+                        const result = { sid, marks, totalObt, maxMarks, perc, grade, date: new Date().toISOString().split('T')[0] };
+                        
+                        // Remove old result if exists
+                        app.data.results = app.data.results.filter(r => r.sid !== sid);
+                        app.data.results.push(result);
+                        app.saveData();
+                        app.modals.result.hide();
+
+                        // Print Transcript
+                        app.modules.exams.printTranscript(result, s);
+                    },
+                    printTranscript: (res, s) => {
+                        const container = document.getElementById('print-container');
+                        container.innerHTML = `
+                            <div id="print-transcript-temp" class="printable-area p-10" style="width: 800px;">
+                                <div class="text-center border-b-4 border-double border-black pb-4 mb-8">
+                                    <h1 class="text-3xl font-bold font-serif">HAMZA AMIN INSTITUTE</h1>
+                                    <p class="text-sm font-bold uppercase tracking-[6px] mt-1">Official Transcript of Records</p>
+                                </div>
+                                <div class="flex justify-between mb-8 text-sm">
+                                    <div>
+                                        <p><strong>Student Name:</strong> ${s.name}</p>
+                                        <p><strong>Father's Name:</strong> ${s.father}</p>
+                                        <p><strong>Enrollment ID:</strong> ${s.id}</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p><strong>Department:</strong> ${s.field}</p>
+                                        <p><strong>Date of Issue:</strong> ${res.date}</p>
+                                    </div>
+                                </div>
+                                <table class="w-full text-sm border-collapse border border-black mb-8">
+                                    <thead>
+                                        <tr class="bg-gray-100">
+                                            <th class="border border-black p-3 text-left">Subject</th>
+                                            <th class="border border-black p-3 text-center">Max Marks</th>
+                                            <th class="border border-black p-3 text-center">Obtained</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${res.marks.map(m => `<tr><td class="border border-black p-3">${m.subject}</td><td class="border border-black p-3 text-center">100</td><td class="border border-black p-3 text-center font-bold">${m.score}</td></tr>`).join('')}
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="bg-gray-100 font-bold">
+                                            <td class="border border-black p-3 text-right">TOTAL</td>
+                                            <td class="border border-black p-3 text-center">${res.maxMarks}</td>
+                                            <td class="border border-black p-3 text-center">${res.totalObt}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <div class="flex justify-end gap-8 text-lg font-bold">
+                                    <div class="border p-4 text-center">
+                                        <span class="block text-xs uppercase font-normal">Percentage</span>
+                                        ${res.perc}%
+                                    </div>
+                                    <div class="border p-4 text-center">
+                                        <span class="block text-xs uppercase font-normal">Grade</span>
+                                        ${res.grade}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        app.utils.print('print-transcript-temp', `${s.name}_Transcript.pdf`);
+                    },
+                    render: () => {
+                        const sorted = [...app.data.results].sort((a,b) => b.perc - a.perc);
+                        document.getElementById('exam-results-body').innerHTML = sorted.map((r, idx) => {
+                            const s = app.data.students.find(x => x.id === r.sid);
+                            if(!s) return '';
+                            let rankBadge = '';
+                            if(idx === 0) rankBadge = '<i class="fa-solid fa-trophy text-yellow-400"></i>';
+                            if(idx === 1) rankBadge = '<i class="fa-solid fa-medal text-gray-400"></i>';
+                            if(idx === 2) rankBadge = '<i class="fa-solid fa-medal text-orange-400"></i>';
+                            
+                            return `
+                                <tr class="hover:bg-white/5 transition">
+                                    <td class="p-4 font-bold text-lg text-center w-16">${idx+1} ${rankBadge}</td>
+                                    <td class="p-4 font-bold">${s.name}</td>
+                                    <td class="p-4 text-xs text-zinc-500">${s.field}</td>
+                                    <td class="p-4 text-center font-mono">${r.totalObt}/${r.maxMarks}</td>
+                                    <td class="p-4 text-center font-bold">${r.perc}%</td>
+                                    <td class="p-4 text-center"><span class="bg-white/10 px-2 py-1 rounded font-bold ${r.grade === 'F' ? 'text-red-500' : 'text-green-400'}">${r.grade}</span></td>
+                                    <td class="p-4 text-right">
+                                        <button onclick="app.modules.exams.reprint('${r.sid}')" class="text-gold hover:underline text-xs">Print</button>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('');
+                    },
+                    reprint: (sid) => {
+                        const r = app.data.results.find(x => x.sid === sid);
+                        const s = app.data.students.find(x => x.id === sid);
+                        app.modules.exams.printTranscript(r, s);
+                    },
+                    downloadSummary: () => {
+                        const container = document.getElementById('print-container');
+                        const sorted = [...app.data.results].sort((a,b) => b.perc - a.perc);
+                        container.innerHTML = `
+                             <div id="print-exam-summary" class="printable-area p-8" style="width: 800px;">
+                                <h1 class="text-2xl font-bold text-center mb-6">Result Gazette</h1>
+                                <table class="w-full text-xs border border-black border-collapse">
+                                    <thead><tr class="bg-gray-200">
+                                        <th class="border border-black p-2">Rank</th>
+                                        <th class="border border-black p-2">Name</th>
+                                        <th class="border border-black p-2">Marks</th>
+                                        <th class="border border-black p-2">%</th>
+                                        <th class="border border-black p-2">Grade</th>
+                                    </tr></thead>
+                                    <tbody>
+                                        ${sorted.map((r, i) => {
+                                            const s = app.data.students.find(x => x.id === r.sid);
+                                            return `
+                                                <tr>
+                                                    <td class="border border-black p-2 text-center">${i+1}</td>
+                                                    <td class="border border-black p-2">${s ? s.name : 'N/A'}</td>
+                                                    <td class="border border-black p-2 text-center">${r.totalObt}</td>
+                                                    <td class="border border-black p-2 text-center">${r.perc}</td>
+                                                    <td class="border border-black p-2 text-center font-bold">${r.grade}</td>
+                                                </tr>
+                                            `;
+                                        }).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        `;
+                        app.utils.print('print-exam-summary', 'Class_Result_Summary.pdf');
+                    }
+                },
+
+                scholarship: {
+                    render: () => {
+                        const holders = app.data.students.filter(s => s.scholarship > 0);
+                        document.getElementById('schol-total-holders').innerText = holders.length;
+                        
+                        document.getElementById('scholarship-table-body').innerHTML = holders.map(s => `
+                            <tr class="border-b border-white/5 hover:bg-white/5">
+                                <td class="p-3">
+                                    <div class="font-bold">${s.name}</div>
+                                    <div class="text-[10px] text-zinc-500">${s.id}</div>
+                                </td>
+                                <td class="p-3 text-center text-green-400 font-bold">${s.scholarship}%</td>
+                                <td class="p-3 text-right text-xs text-blue-400">Approved</td>
+                            </tr>
+                        `).join('');
+                    }
+                }
+            }
+        };
+
+        // Initialize App
+        window.onload = app.init;
+    </script>
+</body>
+</html>
